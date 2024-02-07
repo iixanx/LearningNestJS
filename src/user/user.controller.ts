@@ -1,6 +1,7 @@
-import { Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { SignUpRequestDto } from 'src/dto/request/signUp.dto';
+import { ResStructureDto } from 'src/dto/response/resStructure.dto';
 
 @Controller('user')
 export class UserController {
@@ -9,7 +10,7 @@ export class UserController {
     ) { }
 
     @Post()
-    async signUp(signUpDto: SignUpRequestDto): Promise<object> {
+    async signUp(@Body() signUpDto: SignUpRequestDto): Promise<ResStructureDto> {
         const data = await this.userService.signUp(signUpDto)
 
         return {
@@ -18,6 +19,4 @@ export class UserController {
             statusMsg: "Created"
         }
     }
-
-    
 }

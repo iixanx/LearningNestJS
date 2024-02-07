@@ -18,7 +18,7 @@ export class UserService {
         const isExistEmail = await this.userEntity.findOneBy({ email })
         if(isExistEmail) throw new ConflictException();
 
-        const hashed = hashSync(password, process.env.SALT) // dotenv bcrypt @types/bcrypt
+        const hashed = hashSync(password, Number(process.env.SALT)) // dotenv bcrypt @types/bcrypt
 
         await this.userEntity.save({
             email,

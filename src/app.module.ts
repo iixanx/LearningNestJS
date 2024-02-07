@@ -4,13 +4,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserEntity } from './model/user.entity';
 import { AuthModule } from './auth/auth.module';
+import { RedisModule } from '@liaoliaots/nestjs-redis';
 
 @Module({
   imports: [
     UserModule,
     ConfigModule.forRoot({
       cache: true,
-      isGlobal: true
+      isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -24,9 +25,17 @@ import { AuthModule } from './auth/auth.module';
         database: process.env.DB_NAME,
         entities: [UserEntity],
         synchronize: true,
-      })
+      }),
     }),
-    AuthModule
+    RedisModule.forRoot({
+      readyLog: true,
+      config: {
+        host: process.env.REDIS_HOST,
+        port: Number(process.env.REDIS_PORT),
+        password: process.env.REDIS_PASSWORD
+      },
+    }),
+    AuthModule,
   ],
   controllers: [],
   providers: [],
