@@ -3,6 +3,7 @@ import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserEntity } from './model/user.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -19,16 +20,13 @@ import { UserEntity } from './model/user.entity';
         host: '127.0.0.1',
         port: Number(process.env.DB_PORT),
         username: 'root',
-        password: config.get<string>(process.env.DB_PASSWORD),
+        password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
-        // port: config.get<number>('DB_PORT'),
-        // username: config.get<string>('DB_USER'),
-        // password: config.get<string>('DB_PASSWORD'),
-        // database: config.get<string>('DB_NAME'),
         entities: [UserEntity],
         synchronize: true,
       })
-    })
+    }),
+    AuthModule
   ],
   controllers: [],
   providers: [],
