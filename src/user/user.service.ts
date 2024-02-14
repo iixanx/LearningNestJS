@@ -1,10 +1,10 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { hashSync } from 'bcrypt';
 import { SignUpRequestDto } from 'src/dto/request/signUp.dto';
 import { SignUpResponseDto } from 'src/dto/response/signUp.dto';
 import { UserEntity } from 'src/model/user.entity';
-import { Repository } from 'typeorm';
+import { Binary, Repository } from 'typeorm';
 
 @Injectable()
 export class UserService {
@@ -32,5 +32,12 @@ export class UserService {
       name,
       birth,
     };
+  }
+
+  async userPage(userId: number) {
+    const user = await this.userEntity.findOne({ where: {id: userId}, select: ['id', 'name', 'email', 'birth'] });
+    if(!user) throw new NotFoundException(`userId ${userId} doesn't exist`);
+
+    return user
   }
 }

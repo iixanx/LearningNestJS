@@ -1,10 +1,10 @@
-import { IsDate, IsDateString, IsEmail, IsISO8601, IsString, Matches } from "class-validator"
+import { IsDate, IsDateString, IsEmail, IsISO8601, IsString, Matches } from "@nestjs/class-validator"
 
 export class SignUpRequestDto {
     @IsEmail()
     email: string
 
-    @Matches(/^*./g)
+    // @Matches(/^*./g)
     password: string
 
     @IsString()

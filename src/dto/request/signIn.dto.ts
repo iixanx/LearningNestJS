@@ -1,4 +1,4 @@
-import { IsEmail, Matches } from 'class-validator'
+import { IsEmail, Matches } from '@nestjs/class-validator'
 
 export class SignInDto {
     @IsEmail()
