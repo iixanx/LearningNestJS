@@ -8,29 +8,29 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserService {
-    constructor (
-        @InjectRepository(UserEntity) private userEntity: Repository<UserEntity>,
-    ) {}
+  constructor(
+    @InjectRepository(UserEntity) private userEntity: Repository<UserEntity>,
+  ) {}
 
-    async signUp(signUpDto: SignUpRequestDto): Promise<SignUpResponseDto> {
-        const { email, name, password, birth } = signUpDto
+  async signUp(signUpDto: SignUpRequestDto): Promise<SignUpResponseDto> {
+    const { email, name, password, birth } = signUpDto;
 
-        const isExistEmail = await this.userEntity.findOneBy({ email })
-        if(isExistEmail) throw new ConflictException();
+    const isExistEmail = await this.userEntity.findOneBy({ email });
+    if (isExistEmail) throw new ConflictException();
 
-        const hashed = hashSync(password, Number(process.env.SALT)) // dotenv bcrypt @types/bcrypt
+    const hashed = hashSync(password, Number(process.env.SALT)); // dotenv bcrypt @types/bcrypt
 
-        await this.userEntity.save({
-            email,
-            name,
-            password: hashed,
-            birth
-        })
+    await this.userEntity.save({
+      email,
+      name,
+      password: hashed,
+      birth,
+    });
 
-        return {
-            email,
-            name,
-            birth
-        }
-    }
+    return {
+      email,
+      name,
+      birth,
+    };
+  }
 }

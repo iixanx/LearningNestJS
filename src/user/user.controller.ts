@@ -9,7 +9,7 @@ export class UserController {
         private userService : UserService,
     ) { }
 
-    @Post()
+    @Post() // '/'
     async signUp(@Body() signUpDto: SignUpRequestDto): Promise<ResStructureDto> {
         const data = await this.userService.signUp(signUpDto)
 

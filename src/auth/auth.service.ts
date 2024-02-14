@@ -12,7 +12,7 @@ import { compareSync } from 'bcrypt';
 export class AuthService {
     constructor (
         @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
-        @InjectRedis() private readonly redis: Redis,
+        @InjectRedis() private readonly redis: Redis, //
         private readonly jwt: JwtService,
     ) {}
 
@@ -45,13 +45,13 @@ export class AuthService {
         if(!thisUser) throw new NotFoundException(); // 회원 존재 여부
         if(!compareSync(password, thisUser.password)) throw new BadRequestException(); // 비밀번호 일치 여부
 
-        const accesstoken = await this.generateAccessToken(thisUser.id);
-        const refreshtoken = await this.generateRefreshToken(accesstoken);
+        const accesstoken = await this.generateAccessToken(thisUser.id); // 
+        const refreshtoken = await this.generateRefreshToken(accesstoken); //
 
         return {
             id: thisUser.id,
-            accesstoken,
-            refreshtoken
+            accesstoken, //
+            refreshtoken //
         }
     }
 }

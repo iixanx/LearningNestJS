@@ -4,7 +4,6 @@ import { AuthController } from './auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from 'src/model/user.entity';
 import { JwtModule } from '@nestjs/jwt';
-import { RedisModule } from '@liaoliaots/nestjs-redis';
 
 @Module({
   imports: [
