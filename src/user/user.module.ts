@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -9,7 +9,7 @@ import { JwtService } from '@nestjs/jwt';
   imports: [
     TypeOrmModule.forFeature([UserEntity]),
   ],
-  providers: [UserService, JwtService],
+  providers: [UserService, JwtService, Logger],
   controllers: [UserController]
 })
 export class UserModule {}

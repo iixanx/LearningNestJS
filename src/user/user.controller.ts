@@ -1,15 +1,17 @@
-import { Body, Controller, Get, Headers, Param, Post, UseFilters, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Logger, Param, Post, Req, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
 import { SignUpRequestDto } from 'src/dto/request/signUp.dto';
 import { ResStructureDto } from 'src/dto/response/resStructure.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { HttpExceptionFilter } from 'src/exception/http.exception.filter';
+import { AuthInterceptor } from 'src/auth/auth.interceptor';
 
 @UseFilters(new HttpExceptionFilter())
 @Controller('user')
 export class UserController {
     constructor (
         private userService : UserService,
+        private logger: Logger
     ) { }
 
     @Post() // '/'
@@ -23,9 +25,11 @@ export class UserController {
         }
     }
 
-    @UseGuards(AuthGuard)
-    @Get('/:id')
-    async userPage(@Headers('authorization') accesstoken: string, @Param('id') userId: number) {
+    @UseGuards(new AuthGuard())
+    @UseInterceptors(new AuthInterceptor())
+    @Get()
+    async userPage(@Headers('authorization') accesstoken: string, userId) {
+
         const data = await this.userService.userPage(userId)
 
         return {
